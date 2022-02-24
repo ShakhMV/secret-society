@@ -4,7 +4,9 @@ package az.iktlab.group.secret_society.controller;
 import az.iktlab.group.secret_society.DAO.FlightDAO;
 import az.iktlab.group.secret_society.DB.SQL;
 import az.iktlab.group.secret_society.ENUM.Destination;
+import az.iktlab.group.secret_society.console.Console;
 import az.iktlab.group.secret_society.entity.Flight;
+import az.iktlab.group.secret_society.service.TicketService;
 
 import java.io.File;
 import java.io.IOException;
@@ -112,7 +114,10 @@ public class Controller implements FlightDAO {
             String helper = getFirstWord(s);
             setPlaneID(helper);
         }
+        continueOrNot();
     }
+
+
 
     public void selectFlightInfo() throws IOException, ParseException {
         Scanner SCANNER = new Scanner(System.in);
@@ -250,6 +255,26 @@ public class Controller implements FlightDAO {
             flight.setDuration(duratioN);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    public void continueOrNot() {
+        System.out.println("If you want to continue Enter 'YES' otherwise 'Exit'\t");
+        String continueKey = scanner.next();
+        if(continueKey.equalsIgnoreCase("YES")) {
+            checkFlightData();
+            TicketService ticketService = new TicketService(getPlaneID(), number, flight);
+            ticketService.createTicket();
+        } else if (continueKey.equalsIgnoreCase("EXIT")) {
+            Console console = new Console();
+            try {
+                console.setDirection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Wrong DATA! If you want to continue Enter 'YES' otherwise 'Exit'\t");
+            continueOrNot();
         }
     }
 
