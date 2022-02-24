@@ -1,12 +1,16 @@
 package az.iktlab.group.secret_society.console;
 
 
+import az.iktlab.group.secret_society.controller.Controller;
+import az.iktlab.group.secret_society.service.FlightService;
+import az.iktlab.group.secret_society.service.TicketService;
+
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Console {
     public static Scanner SCANNER = new Scanner(System.in);
-
+    public static Controller controller = new Controller();
 
     public void printCommand() {
         System.out.println();
@@ -45,25 +49,29 @@ public class Console {
         System.out.println();
         if (index == 1) {
             System.out.println(">>> All Flights During 24 Hours:");
-            //Connect to the controller class
+            controller.getNextDay();
             helper();
         } else if (index == 2) {
             System.out.println(">>> Flight Information:");
             String a = setKey();
-            //Connect to the controller class
+            controller.getKeyAsId(
+                    a
+            );
             helper();
         } else if (index == 3) {
             System.out.println(">>> Searching and Booking process:");
             String[] a = setKeysForBooking();
-            //Connect to the controller class
+            controller.getKeysForBooking(a);
             helper();
         } else if (index == 4) {
             System.out.println(">>> Canceling the Booking:");
-            //Connect to the controller or service class
+            TicketService ticketService = new TicketService();
+            ticketService.deleteTicket();
             helper();
         } else if (index == 5) {
             System.out.println(">>> My Flights:");
-            //Connect to the controller or service class
+            FlightService flightService = new FlightService();
+            flightService.getDATA();
             helper();
         } else {
             System.out.println(">>> Successfully Exited! <<<");
